@@ -8,6 +8,16 @@ This repository is intended to act as submission medium for United Creative tech
 `/frontend` uses Next.js
 
 ## How to run service
+### Using script
+
+On Linux, run:
+`./run.sh`
+
+On Windows, run:
+`.\run.ps1`
+
+### Individually
+
 `/backend`:
 1. `go mod tidy`
 2. `go run .`
@@ -21,4 +31,4 @@ or if using yarn:
 2. `yarn dev`
 
 Screenshots & demo:
-https://drive.google.com/drive/folders/14EISDuz9sIbCuK6LT5acxnJv4Wy2bgS_?usp=sharing
+https://drive.google.com/drive/folders/1MHJSOQV0bejNIKT3-W-Vg6pYt2LuVptL?usp=sharing

@@ -1,9 +1,11 @@
 // app/page.tsx  (main dashboard page)
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import {
   BarChart3,
+  ChartBarIncreasing,
   Download,
   LogOut,
   Settings,
@@ -14,8 +16,9 @@ import {
 import { backendApi } from "@/lib/api";
 import { ApiResponse, DashboardStats } from "@/types/api.types";
 import { useRequest } from "alova/client";
-import { formatRupiah } from "@/lib/helper";
-import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "recharts";
+import { formatIDR } from "@/lib/helper";
+import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
+import InvestImg from "~/invest.svg";
 
 const getDashboardStats = () => backendApi.Get<ApiResponse<DashboardStats>>("/admin/dashboard/stats", {});
 
@@ -84,10 +87,8 @@ export default function DashboardPage() {
       >
         <div className="flex h-16 items-center justify-between border-b border-gray-800 px-5">
           <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-full bg-linear-to-br from-amber-400 to-amber-600 flex items-center justify-center font-bold text-black">
-              C
-            </div>
-            <span className="text-lg font-semibold tracking-tight">CKC</span>
+            <Image src={InvestImg} width={48} height={48} alt="Invest" />
+            <span className="text-base lg:text-lg font-semibold tracking-tight">Invest Dashboard</span>
           </div>
           <button
             className="lg:hidden text-gray-400 hover:text-white"
@@ -127,13 +128,11 @@ export default function DashboardPage() {
         {/* Mobile header */}
         <header className="lg:hidden flex items-center justify-between bg-[#111827] border-b border-gray-800 px-4 py-3">
           <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-full bg-linear-to-br from-amber-400 to-amber-600 flex items-center justify-center font-bold text-black">
-              C
-            </div>
-            <span className="font-semibold">CKC</span>
+            <Image src={InvestImg} width={48} height={48} alt="Invest" />
+            <span className="text-base lg:text-lg font-semibold tracking-tight">Invest Dashboard</span>
           </div>
           <button onClick={() => setSidebarOpen(true)}>
-            <BarChart3 size={24} />
+            <ChartBarIncreasing className="text-gray-400 hover:text-white" size={24} />
           </button>
         </header>
 
@@ -156,16 +155,9 @@ export default function DashboardPage() {
                   <span className="text-sm text-gray-400 whitespace-nowrap">
                     Filter By Year:
                   </span>
-                  {/* <select className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-amber-500">
-                    <option>Januari</option>
-                    <option>Februari</option>
-                    <option>Maret</option>
-                  </select> */}
                   <select className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-amber-500">
-                    <option>2023</option>
-                    <option>2024</option>
                     <option>2025</option>
-                    <option>2026</option>
+                    <option disabled>2026</option>
                   </select>
                 </div>
               </div>
@@ -187,7 +179,6 @@ export default function DashboardPage() {
                           bottom: 5,
                         }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" />
                         <Tooltip labelStyle={{ color: 'black' }} />
                         <YAxis width="auto" />
                         <XAxis dataKey="month" hide/>
@@ -202,37 +193,45 @@ export default function DashboardPage() {
                 {statsData &&
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div
-                      className="bg-[#0d111b] rounded-xl p-5 border border-gray-800 flex flex-col items-center justify-center text-center"
+                      className="bg-[#0d111b] rounded-xl p-5 border border-gray-800 flex flex-col justify-center sm:text-start text-center sm:items-start items-center"
                     >
-                      <Wallet size={32} className="text-emerald-400 mb-3" />
-                      <h4 className="font-semibold">Total Deposit</h4>
+                      <div className="flex flex-row space-x-4">
+                        <Wallet size={32} className="text-emerald-400 mb-3" />
+                        <h4 className="font-semibold">Total Deposit</h4>
+                      </div>
                       {statsData.data.total_deposit_value && (
-                        <p className="text-2xl font-bold mt-2">{formatRupiah(statsData.data.total_deposit_value)}</p>
+                        <p className="text-2xl font-bold mt-2">{formatIDR(statsData.data.total_deposit_value, false)}</p>
                       )}
                       <p className="text-sm text-gray-400 mt-1">{statsData.data.total_deposit ?? 0} Deposits</p>
                     </div>
                     <div
-                      className="bg-[#0d111b] rounded-xl p-5 border border-gray-800 flex flex-col items-center justify-center text-center"
+                      className="bg-[#0d111b] rounded-xl p-5 border border-gray-800 flex flex-col justify-center sm:text-start text-center sm:items-start items-center"
                     >
-                      <Download size={32} className="text-emerald-400 mb-3" />
-                      <h4 className="font-semibold">Total Withdraw</h4>
+                      <div className="flex flex-row space-x-4">
+                        <Download size={32} className="text-emerald-400 mb-3" />
+                        <h4 className="font-semibold">Total Withdraw</h4>
+                      </div>
                       {statsData.data.total_withdraw_value && (
-                        <p className="text-2xl font-bold mt-2">{formatRupiah(statsData.data.total_withdraw_value)}</p>
+                        <p className="text-2xl font-bold mt-2">{formatIDR(statsData.data.total_withdraw_value, false)}</p>
                       )}
                       <p className="text-sm text-gray-400 mt-1">{statsData.data.total_withdraw ?? 0} Withdraws</p>
                     </div>
                     <div
-                      className="bg-[#0d111b] rounded-xl p-5 border border-gray-800 flex flex-col items-center justify-center text-center"
+                      className="bg-[#0d111b] rounded-xl p-5 border border-gray-800 flex flex-col justify-center sm:text-start text-center sm:items-start items-center"
                     >
-                      <ShieldCheck size={32} className="text-emerald-400 mb-3" />
-                      <h4 className="font-semibold">Total Verified KYC</h4>
+                      <div className="flex flex-row space-x-4">
+                        <ShieldCheck size={32} className="text-emerald-400 mb-3" />
+                        <h4 className="font-semibold">Total Verified KYC</h4>
+                      </div>
                       <p className="text-2xl font-bold mt-2">{statsData.data.total_verified_kyc ?? 0} Verified</p>
                     </div>
                     <div
-                      className="bg-[#0d111b] rounded-xl p-5 border border-gray-800 flex flex-col items-center justify-center text-center"
+                      className="bg-[#0d111b] rounded-xl p-5 border border-gray-800 flex flex-col justify-center sm:text-start text-center sm:items-start items-center"
                     >
-                      <Users size={32} className="text-emerald-400 mb-3" />
-                      <h4 className="font-semibold">Total Registration</h4>
+                      <div className="flex flex-row space-x-4">
+                        <Users size={32} className="text-emerald-400 mb-3" />
+                        <h4 className="font-semibold">Total Registration</h4>
+                      </div>
                       <p className="text-2xl font-bold mt-2">{statsData.data.total_registration ?? 0} Users</p>
                     </div>
                   </div>

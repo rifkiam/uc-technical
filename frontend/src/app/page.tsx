@@ -3,11 +3,13 @@
 // app/page.tsx
 import type { Metadata } from "next";
 import { useState } from "react";
-import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
+import Image from "next/image";
+import { Area, AreaChart } from "recharts";
+import InvestImg from "~/invest.svg";
 // import "./globals.css";
 
 const metadata: Metadata = {
-  title: "CKC — Pasar Kripto Indonesia",
+  title: "Invest — Pasar Kripto Indonesia",
   description: "Harga kripto dalam Rupiah hari ini",
 };
 
@@ -44,10 +46,7 @@ export default function Home() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-16">
               <div className="flex flex-row items-center space-x-4">
-                <div className="h-8 w-8 rounded-full bg-linear-to-br from-amber-400 to-orange-600 flex items-center justify-center font-bold text-black text-xl">
-                  C
-                </div>
-                <span className="text-xl font-semibold tracking-tight">CKC</span>
+                <Image src={InvestImg} width={48} height={48} alt="Invest" />
               </div>
               <nav className="hidden md:flex items-center gap-8">
                 <a href="#" className="text-gray-300 hover:text-white transition-colors">
